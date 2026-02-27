@@ -12,7 +12,7 @@ export async function getListings(): Promise<ListingWithProfile[]> {
     .select(
       `
       *,
-      profiles (display_name, avatar_url) 
+      profiles (display_name, avatar_url, contact_info) 
     `,
     ) // This "joins" the profile data so you have the seller's name!
     .neq("status", "closed")

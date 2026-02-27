@@ -19,6 +19,7 @@ export interface Listing {
   description: string | null;
   price: number;
   category: string;
+  status: "active" | "closed";
   image_urls: string[];
   created_at: string;
 }
@@ -26,10 +27,16 @@ export interface Listing {
 /** * This type is for your main feed where you join the listing
  * with the seller's profile info.
  */
+export interface ContactInfo {
+  instagram?: string;
+  phone?: string;
+  telegram?: string;
+}
 export type ListingWithProfile = Listing & {
   profiles: {
     display_name: string;
     avatar_url: string | null;
+    contact_info: ContactInfo | null;
   };
 };
 

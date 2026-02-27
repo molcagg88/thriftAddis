@@ -60,7 +60,7 @@ export default function ViewListingPage() {
   }
 
   const isOwner = user?.id === listing.user_id;
-  const isClosed = listing.status === "closed" || listing.status === "sold";
+  const isClosed = listing.status === "closed";
 
   // Supabase returns relations as objects or arrays depending on the schema.
   // We use optional chaining to safely access the joined profile.

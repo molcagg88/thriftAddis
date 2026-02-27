@@ -5,13 +5,18 @@ import { useSupabase } from "@/utils/supabase/client";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, Loader2, MessageCircle, User } from "lucide-react";
 import {
-  ArrowLeft,
-  Loader2,
-  MessageCircle,
-  ShieldCheck,
-  User,
-} from "lucide-react";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Listing, ListingWithProfile } from "@/types";
 
 export default function ViewListingPage() {
   const { user, isLoaded } = useUser();
@@ -20,7 +25,7 @@ export default function ViewListingPage() {
   const supabase = useSupabase();
 
   const [loading, setLoading] = useState(true);
-  const [listing, setListing] = useState<any>(null);
+  const [listing, setListing] = useState<ListingWithProfile | null>(null);
 
   useEffect(() => {
     async function fetchListingDetails() {
@@ -30,7 +35,7 @@ export default function ViewListingPage() {
         .select(
           `
           *,
-          profiles (display_name, avatar_url)
+          profiles (display_name, avatar_url, contact_info)
         `,
         )
         .eq("id", id)
@@ -59,13 +64,14 @@ export default function ViewListingPage() {
     );
   }
 
-  const isOwner = user?.id === listing.user_id;
-  const isClosed = listing.status === "closed" || listing.status === "sold";
+  const isOwner = user?.id === listing?.user_id;
+  const isClosed = listing?.status === "closed";
 
   // Supabase returns relations as objects or arrays depending on the schema.
   // We use optional chaining to safely access the joined profile.
-  const sellerName = listing.profiles?.display_name || "Thrift Addis Seller";
-  const sellerAvatar = listing.profiles?.avatar_url;
+  const sellerName = listing?.profiles?.display_name || "Thrift Addis Seller";
+  const sellerAvatar = listing?.profiles?.avatar_url;
+  const contactInfo = listing?.profiles?.contact_info || {};
 
   return (
     <div className="max-w-5xl mx-auto my-10 px-4">
@@ -88,8 +94,8 @@ export default function ViewListingPage() {
               </div>
             )}
             <Image
-              src={listing.image_urls[0] || "/placeholder.png"}
-              alt={listing.title}
+              src={listing?.image_urls[0] || "./placeholder.svg"}
+              alt={listing?.title || ""}
               fill
               className={`object-cover ${isClosed ? "grayscale opacity-80" : ""}`}
               priority
@@ -104,10 +110,10 @@ export default function ViewListingPage() {
                 <h1
                   className={`text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight ${isClosed ? "line-through text-gray-500" : ""}`}
                 >
-                  {listing.title}
+                  {listing?.title}
                 </h1>
                 <p className="text-3xl font-black text-primary">
-                  ${listing.price.toFixed(2)}
+                  ${listing?.price.toFixed(2)}
                 </p>
               </div>
 
@@ -115,7 +121,7 @@ export default function ViewListingPage() {
               <div className="prose prose-gray">
                 <p className="text-muted-foreground">Description</p>
                 <p className="p-2 text-gray-600 leading-relaxed whitespace-pre-wrap">
-                  {listing.description ||
+                  {listing?.description ||
                     "No description provided by the seller."}
                 </p>
               </div>
@@ -149,25 +155,91 @@ export default function ViewListingPage() {
             <div className="mt-8 pt-6 border-t border-gray-100">
               {isOwner ? (
                 <Link
-                  href={`/edit/${listing.id}`}
+                  href={`/listing/edit/${listing?.id}`}
                   className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 py-4 rounded-xl font-bold text-lg transition-all"
                 >
                   Edit Your Listing
                 </Link>
               ) : (
-                <button
-                  disabled={isClosed}
-                  className="w-full bg-primary hover:bg-primary/70 text-white py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98] disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {isClosed ? (
-                    "Item Unavailable"
-                  ) : (
-                    <>
-                      <MessageCircle className="w-5 h-5" />
-                      Contact Seller
-                    </>
-                  )}
-                </button>
+                // wrap the call‑to‑action in a dialog so we can show contact details
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button
+                      disabled={isClosed}
+                      className="w-full bg-primary hover:bg-primary/70 text-white py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98] disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isClosed ? (
+                        "Item Unavailable"
+                      ) : (
+                        <>
+                          <MessageCircle className="w-5 h-5" />
+                          Contact Seller
+                        </>
+                      )}
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Contact {sellerName}</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>
+                      The seller shared the following info:
+                    </DialogDescription>
+                    <div className="space-y-2">
+                      {contactInfo.phone && (
+                        <p>
+                          Phone:{" "}
+                          <a
+                            href={`tel:${contactInfo.phone}`}
+                            className="text-green-600 underline"
+                          >
+                            {contactInfo.phone}
+                          </a>
+                        </p>
+                      )}
+
+                      {contactInfo.instagram && (
+                        <p>
+                          Instagram:{" "}
+                          <a
+                            href={`https://instagram.com/${contactInfo.instagram}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-600 underline"
+                          >
+                            @{contactInfo.instagram}
+                          </a>
+                        </p>
+                      )}
+                      {contactInfo.telegram && (
+                        <p>
+                          Telegram:{" "}
+                          <a
+                            href={`https://instagram.com/${contactInfo.telegram}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-600 underline"
+                          >
+                            @{contactInfo.telegram}
+                          </a>
+                        </p>
+                      )}
+                      {!contactInfo.phone &&
+                        !contactInfo.telegram &&
+                        !contactInfo.instagram && (
+                          <p className="text-gray-500">
+                            Seller hasn’t provided contact details.
+                          </p>
+                        )}
+                    </div>
+                    <DialogFooter>
+                      <DialogClose className="bg-primary text-white px-4 py-2 rounded">
+                        Close
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               )}
             </div>
           </div>

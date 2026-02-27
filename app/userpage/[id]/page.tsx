@@ -15,9 +15,9 @@ export default async function SellerPage({
   if (!seller) {
     notFound();
   }
-  return (
-    <div className="min-h-screen bg-white">
-      <SellerProfile seller={seller} />
-    </div>
-  );
+  // layout already gives us a min‑height and handles bottom padding for the
+  // fixed navigation bar. an extra `min-h-screen` here triggered a resize
+  // during hydration/viewport changes which was the cause of the “fling to the
+  // top” behaviour on this route.
+  return <SellerProfile seller={seller} />;
 }

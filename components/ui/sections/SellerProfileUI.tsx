@@ -2,8 +2,9 @@
 
 import { ArrowLeft, Instagram, MessageCircle } from "lucide-react";
 import { Profile, Listing } from "@/types";
-import { ProductCard } from "@/components/marketplace/product-card";
+import ProductCard from "@/components/marketplace/product-card";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface SellerProfileUIProps {
   seller: Profile;
@@ -13,15 +14,24 @@ export default function SellerProfileUI({
   seller,
   listings,
 }: SellerProfileUIProps) {
+  const router = useRouter();
+  // drop the extra min-h-screen; the parent layout already stretches the
+  // viewport and provides the padding for the bottom nav. avoiding duplicate
+  // height rules stops layout jitter when the fixed footer appears/disappears.
   return (
-    <div className="min-h-screen">
-      {/* Back Button */}
-      <Link
-        href={"/"}
+    <div>
+      {/* Back button – use router.back() so we return to whatever page the
+          visitor came from instead of always jumping to `/` (which forces a
+          scroll-to-top). render as a button so it can't be accidentally
+          focused/activated while scrolling. */}
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <button
+        type="button"
+        onClick={() => router.back()}
         className="fixed top-4 left-4 md:top-6 md:left-6 z-40 p-2 md:p-3 border-2 border-green-600 bg-white hover:bg-green-50 transition-colors"
       >
         <ArrowLeft size={24} className="text-green-600" />
-      </Link>
+      </button>
 
       {/* Seller Header */}
       <section className="pt-20 md:pt-8 px-4 md:px-6 py-8 md:py-12 bg-white border-b-2 border-green-600">

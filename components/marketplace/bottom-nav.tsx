@@ -7,8 +7,10 @@ import { Home, Search, Plus, User } from "lucide-react";
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 md:hidden left-0 right-0 bg-white border-t-2 border-green-600 z-50">
-      <div className="flex items-center justify-around py-3">
+    // set an explicit height so we can sync the padding on the parent
+    // container. env(safe-area-inset-bottom) is included for iOS notch
+    <nav className="fixed inset-x-0 bottom-0 h-20 md:hidden bg-white border-t-2 border-green-600 z-50 pb-[env(safe-area-inset-bottom)]">
+      <div className="flex items-center justify-around h-full">
         {/* Home */}
         <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
           <Home size={24} className="text-green-600" />

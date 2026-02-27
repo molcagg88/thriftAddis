@@ -1,6 +1,5 @@
 import { getListings } from "@/lib/data";
 import ProductGridUI from "../ui/sections/ProductGridUI";
-import { ProductCard } from "./product-card";
 import { ListingWithProfile } from "@/types";
 
 export async function ProductGrid() {

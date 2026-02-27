@@ -1,9 +1,3 @@
-// import EditListingPage from "@/components/ui/sections/EditListing";
-
-// export default function EditListing() {
-//   return <EditListingPage />;
-// }
-
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useUser } from "@clerk/nextjs";

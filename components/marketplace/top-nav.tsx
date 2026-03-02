@@ -1,7 +1,21 @@
-import { Search, Plus, User } from "lucide-react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+"use client";
+import { Search, Plus, User, Settings } from "lucide-react";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
 export function TopNav() {
+  const user = useUser();
   return (
     <nav className="hidden md:flex sticky top-0 z-40 w-full bg-white border-b-2 border-green-600">
       <div className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
@@ -42,7 +56,30 @@ export function TopNav() {
 
           {/* If the user IS logged in, show their avatar */}
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
+            <div className="flex items-center gap-2">
+              <UserButton afterSignOutUrl="/" />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-2 rounded-full hover:bg-slate-100">
+                    <Settings size={18} className="text-green-600" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href={`/profile/${user?.user?.id}`}>Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/">About Us</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/">FAQs</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/">Contact Us</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </SignedIn>
         </div>
       </div>

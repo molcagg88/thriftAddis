@@ -5,13 +5,8 @@ import { useSupabase } from "@/utils/supabase/client";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Loader2,
-  MessageCircle,
-  ShieldCheck,
-  User,
-} from "lucide-react";
+import { Loader2, MessageCircle, ShieldCheck, User } from "lucide-react";
+import BackButton from "@/components/buttons/BackButton";
 
 export default function ViewListingPage() {
   const { user, isLoaded } = useUser();
@@ -70,13 +65,7 @@ export default function ViewListingPage() {
   return (
     <div className="max-w-5xl mx-auto my-10 px-4">
       {/* Top Navigation */}
-      <button
-        onClick={() => router.back()}
-        className="flex items-center text-gray-500 hover:text-black transition-colors mb-6 w-fit"
-      >
-        <ArrowLeft className="w-5 h-5 mr-1" />
-        <span className="text-sm font-medium">Back to Marketplace</span>
-      </button>
+      <BackButton label="Back to Marketplace" />
 
       <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 overflow-hidden border border-gray-100">
         <div className="grid grid-cols-1 md:grid-cols-2">

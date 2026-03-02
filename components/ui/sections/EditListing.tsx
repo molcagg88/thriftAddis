@@ -4,7 +4,8 @@ import { useUser } from "@clerk/nextjs";
 import { useSupabase } from "@/utils/supabase/client";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
-import { ImagePlus, Loader2, X, Trash2, ArrowLeft } from "lucide-react";
+import { ImagePlus, Loader2, X, Trash2 } from "lucide-react";
+import BackButton from "@/components/buttons/BackButton";
 
 export default function EditListingPage() {
   const { user, isLoaded } = useUser();
@@ -144,13 +145,7 @@ export default function EditListingPage() {
     <div className="max-w-xl mx-auto my-10 px-4">
       {/* Top Navigation / Actions */}
       <div className="flex justify-between items-center mb-6">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center text-gray-500 hover:text-black transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+        <BackButton label="Back" />
 
         <button
           onClick={handleCloseListing}

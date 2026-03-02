@@ -22,10 +22,13 @@ export function BottomNav() {
     <nav className="fixed inset-x-0 bottom-0 h-20 md:hidden bg-white border-t-2 border-primary z-50 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-around h-full pt-4">
         {/* Home */}
-        <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
+        <Link
+          href="/"
+          className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
+        >
           <Home size={24} className="text-primary" />
           <span className="text-xs text-primary font-bold">Home</span>
-        </button>
+        </Link>
 
         {/* Search */}
         <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
@@ -43,14 +46,24 @@ export function BottomNav() {
         </Link>
 
         {/* Profile */}
+        <SignedIn>
+          <Link
+            href={`/profile/${user?.id}`}
+            className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
+          >
+            <User size={24} className="text-primary" />
+            <span className="text-xs text-primary font-bold">Profile</span>
+          </Link>{" "}
+        </SignedIn>
 
-        <Link
-          href={`/userpage/${user?.id}`}
-          className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
-        >
-          <User size={24} className="text-primary" />
-          <span className="text-xs text-primary font-bold">Profile</span>
-        </Link>
+        <SignedOut>
+          <SignInButton>
+            <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
+              <User size={24} className="text-primary" />
+              <span className="text-xs text-primary font-bold">Profile</span>
+            </button>
+          </SignInButton>
+        </SignedOut>
 
         <SignedOut>
           <SignInButton mode="modal">

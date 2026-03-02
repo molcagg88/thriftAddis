@@ -6,9 +6,10 @@ export interface Profile {
   avatar_url: string | null;
   contact_info: {
     instagram?: string;
-    email?: string;
+    telegram?: string;
     phone?: string;
   };
+  created_at: string;
   updated_at: string;
 }
 
@@ -18,6 +19,7 @@ export interface Listing {
   title: string;
   description: string | null;
   price: number;
+  location: string;
   category: string;
   status: "active" | "closed";
   image_urls: string[];
@@ -37,6 +39,7 @@ export type ListingWithProfile = Listing & {
     display_name: string;
     avatar_url: string | null;
     contact_info: ContactInfo | null;
+    created_at: string;
   };
 };
 

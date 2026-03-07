@@ -2,7 +2,7 @@ import { ArrowLeft, MessageCircle, Instagram } from "lucide-react";
 import ProductCard from "./product-card";
 import { getSellerListings, getSellerProfile } from "@/lib/data";
 import SellerProfileUI from "../ui/sections/SellerProfileUI";
-import { Listing, Profile } from "@/types";
+import { Listing, ListingWithProfile, Profile } from "@/types";
 import { notFound } from "next/navigation";
 
 interface SellerProfileProps {

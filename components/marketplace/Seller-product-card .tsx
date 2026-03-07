@@ -3,16 +3,19 @@
 import { useState } from "react";
 import { Edit, Heart, Tag, User as UserIcon } from "lucide-react";
 import Link from "next/link";
-import { Listing, ListingWithProfile } from "@/types";
+import { Listing, ListingWithProfile, Profile } from "@/types";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 
 interface ProductCardProps {
-  product: ListingWithProfile;
-  sellerName: string;
+  product: Listing;
+  seller: Profile;
 }
 
-export default function ProductCard({ product, sellerName }: ProductCardProps) {
+export default function SellerProductCard({
+  product,
+  seller,
+}: ProductCardProps) {
   const [liked, setLiked] = useState(false);
   const { user } = useUser();
   const imageUrl = product.image_urls[0];
@@ -40,7 +43,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
       {/* STRETCHED LINK */}
       <Link
         href={`/listing/${product.id}`}
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-0"
         aria-label={`View ${product.title}`}
       />
 
@@ -51,7 +54,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
           alt={product.title}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className={`object-cover transition-transform duration-500 `}
+          className={`object-cover transition-transform duration-500`}
         />
 
         {/* Floating Action Buttons */}
@@ -61,7 +64,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
               e.preventDefault();
               setLiked(!liked);
             }}
-            className="p-1.5 md:p-2 bg-white border-[1.5px] border-green-600 shadow-[2px_2px_0px_0px_rgba(22,163,74,1)] active:translate-x-px active:translate-y-px active:shadow-none transition-all"
+            className="p-1.5 md:p-2 bg-white border-[1.5px] border-green-600 shadow-[2px_2px_0px_0px_rgba(22,163,74,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
           >
             <Heart
               size={16}
@@ -81,7 +84,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
       </div>
 
       {/* Content Area */}
-      <div className="p-2.5 md:p-4 flex flex-col flex-1 relative z-0 bg-white">
+      <div className="p-2.5 md:p-4 flex flex-col flex-1 relative z-10 bg-white">
         {/* Price */}
         <div className="inline-block bg-green-600 text-white px-1.5 py-0.5 text-sm md:text-lg font-black italic w-fit mb-1">
           {formatPrice(product.price)}
@@ -104,7 +107,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
               key={index}
               className="text-[9px] md:text-[10px] uppercase font-bold text-green-700 bg-green-50 px-1.5 py-0.5 border border-green-200 flex items-center gap-0.5"
             >
-              <Tag size={8} className="md:w-2.5" />
+              <Tag size={8} className="md:w-[10px]" />
               {tag.trim()}
             </span>
           ))}
@@ -116,14 +119,14 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
             href={`/userpage/${product.user_id}`}
             className="flex items-center gap-1.5 group/seller min-w-0"
           >
-            <div className="shrink-0 w-5 h-5 md:w-6 md:h-6 rounded-full bg-green-50 border border-green-600 flex items-center justify-center">
-              {!product.profiles.avatar_url && (
-                <UserIcon size={12} className="text-green-600 md:w-3.5" />
+            <div className="flex-shrink-0 w-5 h-5 md:w-6 md:h-6 rounded-full bg-green-50 border border-green-600 flex items-center justify-center">
+              {!seller.avatar_url && (
+                <UserIcon size={12} className="text-green-600 md:w-[14px]" />
               )}
-              {product.profiles.avatar_url && (
+              {seller.avatar_url && (
                 <Image
-                  src={product.profiles.avatar_url}
-                  alt={product.profiles.display_name}
+                  src={seller.avatar_url}
+                  alt={seller.display_name || "Seller Avatar"}
                   width={20}
                   height={20}
                   className="w-5 h-5 md:w-6 md:h-6 rounded-full object-cover"
@@ -131,7 +134,7 @@ export default function ProductCard({ product, sellerName }: ProductCardProps) {
               )}
             </div>
             <span className="text-[10px] md:text-xs font-black text-gray-700 truncate group-hover/seller:text-green-600 uppercase">
-              {sellerName}
+              {seller.display_name || seller.username}
             </span>
           </Link>
         </div>

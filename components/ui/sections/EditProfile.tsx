@@ -9,6 +9,7 @@ import { Profile, Listing } from "@/types";
 import ProductCard from "@/components/marketplace/product-card";
 import { useSupabase } from "@/utils/supabase/client";
 import { useUser } from "@clerk/nextjs";
+import SellerProductCard from "@/components/marketplace/Seller-product-card ";
 
 // helper to load image
 async function createImage(url: string): Promise<HTMLImageElement> {
@@ -490,10 +491,10 @@ export default function EditProfile({
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {listings.map((product) => (
-                <ProductCard
+                <SellerProductCard
                   key={product.id}
                   product={product} // Changed from 'product' to 'listing' to match your updated ProductCard prop
-                  sellerName={seller.display_name || ""}
+                  seller={seller}
                 />
               ))}
             </div>

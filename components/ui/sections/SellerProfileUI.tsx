@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import SellerProductCard from "@/components/marketplace/Seller-product-card ";
 
 interface SellerProfileUIProps {
   seller: Profile;
@@ -49,10 +50,10 @@ export default function SellerProfileUI({
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {listings.map((product) => (
-              <ProductCard
+              <SellerProductCard
                 key={product.id}
                 product={product}
-                sellerName={seller.display_name || "User"}
+                seller={seller}
               />
             ))}
           </div>

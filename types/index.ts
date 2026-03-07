@@ -20,7 +20,7 @@ export interface Listing {
   description: string | null;
   price: number;
   location: string;
-  category: string;
+  tags: string[];
   status: "active" | "closed";
   image_urls: string[];
   created_at: string;

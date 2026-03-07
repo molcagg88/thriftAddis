@@ -31,10 +31,13 @@ export function BottomNav() {
         </Link>
 
         {/* Search */}
-        <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
+        <Link
+          href="/mobile-search"
+          className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
+        >
           <Search size={24} className="text-primary" />
           <span className="text-xs text-primary font-bold">Search</span>
-        </button>
+        </Link>
 
         {/* Sell - Center Prominent Button */}
         <Link
@@ -51,35 +54,31 @@ export function BottomNav() {
             href={`/profile/${user?.id}`}
             className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
           >
-            <User size={24} className="text-primary" />
-            <span className="text-xs text-primary font-bold">Profile</span>
-          </Link>{" "}
+            <User size={24} className="text-green-600" />
+            <span className="text-xs text-green-600 font-bold">Profile</span>
+          </Link>
+          <span className="flex flex-col items-center gap-1 p-3">
+            <UserButton afterSignOutUrl="/" />
+          </span>
         </SignedIn>
-
-        <SignedOut>
-          <SignInButton>
-            <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
-              <User size={24} className="text-primary" />
-              <span className="text-xs text-primary font-bold">Profile</span>
-            </button>
-          </SignInButton>
-        </SignedOut>
 
         <SignedOut>
           <SignInButton mode="modal">
+            <Link
+              href={`/profile/${user?.id}`}
+              className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
+            >
+              <User size={24} className="text-green-600" />
+              <span className="text-xs text-green-600 font-bold">Profile</span>
+            </Link>
+          </SignInButton>
+          <SignInButton mode="modal">
             <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
-              <LogIn size={24} className="text-primary" />
-              <span className="text-xs text-primary font-bold">Sign In</span>
+              <LogIn size={24} className="text-green-600" />
+              <span className="text-xs text-green-600 font-bold">Sign In</span>
             </button>
           </SignInButton>
         </SignedOut>
-
-        {/* If the user IS logged in, show their avatar */}
-        <SignedIn>
-          <div className="p-3">
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </SignedIn>
       </div>
     </nav>
   );

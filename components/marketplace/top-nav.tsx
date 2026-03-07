@@ -130,7 +130,7 @@ export function TopNav({ recentListings = [] }: { recentListings?: any[] }) {
       : [];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white border-b-2 border-green-600">
+    <nav className="sticky top-0 z-50 w-full hidden md:block bg-white border-b-2 border-green-600">
       <div
         className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6"
         ref={dropdownRef}

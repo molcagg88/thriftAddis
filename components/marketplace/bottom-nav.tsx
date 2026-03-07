@@ -64,13 +64,10 @@ export function BottomNav() {
 
         <SignedOut>
           <SignInButton mode="modal">
-            <Link
-              href={`/profile/${user?.id}`}
-              className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors"
-            >
+            <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">
               <User size={24} className="text-green-600" />
               <span className="text-xs text-green-600 font-bold">Profile</span>
-            </Link>
+            </button>
           </SignInButton>
           <SignInButton mode="modal">
             <button className="flex flex-col items-center gap-1 p-3 hover:bg-green-50 transition-colors">

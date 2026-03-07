@@ -43,11 +43,11 @@
 export function HeroSection() {
   return (
     <section
-      className="relative h-[70vh] flex flex-col justify-center items-center bg-center bg-cover text-[#f8f1e5] px-4 overflow-hidden"
+      className="relative h-[60vh] md:h-[70vh] flex flex-col justify-center items-center bg-center bg-cover text-[#f8f1e5] px-4 overflow-hidden"
       style={{ backgroundImage: `url('./images/hero.avif')` }} //
     >
       {/* Modern Multi-layered Overlay */}
-      <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/50 z-0"></div>
+      <div className="absolute inset-0 bg-linear-to-b from-black/55 via-black/35 to-black/50 z-0"></div>
       <div className="absolute inset-0 bg-green-900/20 mix-blend-multiply z-0"></div>
 
       <div className="max-w-7xl mx-auto text-center relative z-10">
